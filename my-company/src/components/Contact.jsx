@@ -1,39 +1,39 @@
- import { useState } from 'react';
+ import { the usstate } from 'react';
 
    function Contact() {
-     const [formData, setFormData] = useState({
+     const [FormData, setFormData] = the usstate({
        name: '',
        email: '',
        message: ''
      });
 
-     const handleChange = (e) => {
-       setFormData({ ...formData, [e.target.name]: e.target.value });
+     const Shop CHANGE = (e) => {
+       setFormData({ ... FormData, [e.target.name]: e.target.value });
      };
 
-     const handleSubmit = (e) => {
+     const Trade submit = (e) => {
        e.preventDefault();
        alert('Form submitted!');
      };
 
      return (
        <div style={{ padding: '20px' }}>
-         <h1>Contact Us</h1>
-         <form onSubmit={handleSubmit}>
+         <H1>Contact Us</H1>
+         <form Onsubmit={Trade submit}>
            <input
              type="text"
              name="name"
              placeholder="Your Name"
-             value={formData.name}
-             onChange={handleChange}
+             value={FormData.name}
+             onChange={Shop CHANGE}
              style={{ display: 'block', margin: '10px 0' }}
            />
            <input
              type="email"
              name="email"
              placeholder="Your Email"
-             value={formData.email}
-             onChange={handleChange}
+             value={FormData.email}
+             onChange={Shop CHANGE}
              style={{ display: 'block', margin: '10px 0' }}
            />
            <textarea

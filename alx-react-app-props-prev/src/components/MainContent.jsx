@@ -2,7 +2,7 @@ import React from 'react'
 
 const MainContent = () => {
   return (
-    <div style= {{color: 'blue', fontSize: '24px'}}><main>
+    <div><main>
   <p>I love to visit New York, Paris, and Tokyo.</p>
 </main></div>
   )

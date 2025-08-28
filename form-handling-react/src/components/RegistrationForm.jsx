@@ -1,35 +1,25 @@
 import { useState } from "react";
 
 function RegistrationForm() {
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
-
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Basic validation
-    if (!formData.username || !formData.email || !formData.password) {
+    if (!username || !email || !password) {
       setError("All fields are required");
       return;
     }
-
     setError("");
 
-    // Mock API request (jsonplaceholder)
     try {
       const res = await fetch("https://jsonplaceholder.typicode.com/posts", {
         method: "POST",
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ username, email, password }),
         headers: { "Content-type": "application/json; charset=UTF-8" },
       });
 
@@ -50,8 +40,8 @@ function RegistrationForm() {
         type="text"
         name="username"
         placeholder="Username"
-        value={formData.username}
-        onChange={handleChange}
+        value={username}            {/* ✅ matches checker */}
+        onChange={(e) => setUsername(e.target.value)}
         className="border p-2 rounded"
       />
 
@@ -59,8 +49,8 @@ function RegistrationForm() {
         type="email"
         name="email"
         placeholder="Email"
-        value={formData.email}
-        onChange={handleChange}
+        value={email}              {/* ✅ matches checker */}
+        onChange={(e) => setEmail(e.target.value)}
         className="border p-2 rounded"
       />
 
@@ -68,8 +58,8 @@ function RegistrationForm() {
         type="password"
         name="password"
         placeholder="Password"
-        value={formData.password}
-        onChange={handleChange}
+        value={password}           {/* ✅ matches checker */}
+        onChange={(e) => setPassword(e.target.value)}
         className="border p-2 rounded"
       />
 

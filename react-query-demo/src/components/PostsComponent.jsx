@@ -1,5 +1,4 @@
-// If using @tanstack/react-query: 
-// import { useQuery } from "@tanstack/react-query";
+// src/components/PostsComponent.jsx
 
 import { useQuery } from "react-query";
 
@@ -16,7 +15,16 @@ function PostsComponent() {
     isError,
     error,
     refetch,
-  } = useQuery("posts", fetchPosts);
+  } = useQuery("posts", fetchPosts, {
+    // ✅ Cache stays in memory for 5 minutes (default = 5 mins)
+    cacheTime: 1000 * 60 * 5,
+
+    // ✅ Data considered "fresh" for 10 seconds (default = 0)
+    staleTime: 1000 * 10,
+
+    // ✅ Refetch if window is focused (shows responsiveness)
+    refetchOnWindowFocus: true,
+  });
 
   if (isLoading) return <p>Loading posts...</p>;
   if (isError) return <p>Error: {error.message}</p>;
@@ -24,6 +32,10 @@ function PostsComponent() {
   return (
     <div>
       <h2>Posts</h2>
+      <p>
+        Cached for <strong>5 minutes</strong>, fresh for{" "}
+        <strong>10 seconds</strong>
+      </p>
       <button onClick={() => refetch()}>Refetch Posts</button>
       <ul>
         {posts.slice(0, 10).map((post) => (

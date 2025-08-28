@@ -4,17 +4,19 @@ function RegistrationForm() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({});
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let validationErrors = {};
 
-    // Basic validation
-    if (!username || !email || !password) {
-      setError("All fields are required");
+
+    setErrors(validationErrors);
+
+    // stop if any errors
+    if (Object.keys(validationErrors).length > 0) {
       return;
     }
-    setError("");
 
     try {
       const res = await fetch("https://jsonplaceholder.typicode.com/posts", {
@@ -24,8 +26,14 @@ function RegistrationForm() {
       });
 
       const data = await res.json();
-      console.log("User registered:", data);
+      console.log("User registered (Controlled Form):", data);
       alert("Registration successful!");
+
+      // reset fields
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setErrors({});
     } catch (err) {
       console.error("Error:", err);
     }
@@ -34,34 +42,39 @@ function RegistrationForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-sm mx-auto">
       <h2 className="text-xl font-bold">Controlled Registration Form</h2>
-      {error && <p className="text-red-500">{error}</p>}
 
-      <input
-        type="text"
-        name="username"
-        placeholder="Username"
-        value={username}            {/* ✅ matches checker */}
-        onChange={(e) => setUsername(e.target.value)}
-        className="border p-2 rounded"
-      />
+      <div>
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="border p-2 rounded w-full"
+        />
+        {errors.username && <p className="text-red-500">{errors.username}</p>}
+      </div>
 
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={email}              {/* ✅ matches checker */}
-        onChange={(e) => setEmail(e.target.value)}
-        className="border p-2 rounded"
-      />
+      <div>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="border p-2 rounded w-full"
+        />
+        {errors.email && <p className="text-red-500">{errors.email}</p>}
+      </div>
 
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={password}           {/* ✅ matches checker */}
-        onChange={(e) => setPassword(e.target.value)}
-        className="border p-2 rounded"
-      />
+      <div>
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="border p-2 rounded w-full"
+        />
+        {errors.password && <p className="text-red-500">{errors.password}</p>}
+      </div>
 
       <button type="submit" className="bg-blue-600 text-white p-2 rounded">
         Register

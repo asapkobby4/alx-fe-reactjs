@@ -8,15 +8,17 @@ function RegistrationForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let validationErrors = {};
 
+    // ✅ Manual validation
+    const newErrors = {};
+    if (!username) newErrors.username = "Username is required";
+    if (!email) newErrors.email = "Email is required";
+    if (!password) newErrors.password = "Password is required";
 
-    setErrors(validationErrors);
+    setErrors(newErrors);
 
-    // stop if any errors
-    if (Object.keys(validationErrors).length > 0) {
-      return;
-    }
+    // Stop if validation fails
+    if (Object.keys(newErrors).length > 0) return;
 
     try {
       const res = await fetch("https://jsonplaceholder.typicode.com/posts", {
@@ -26,10 +28,10 @@ function RegistrationForm() {
       });
 
       const data = await res.json();
-      console.log("User registered (Controlled Form):", data);
+      console.log("User registered (Controlled):", data);
       alert("Registration successful!");
 
-      // reset fields
+      // reset
       setUsername("");
       setEmail("");
       setPassword("");
@@ -46,9 +48,9 @@ function RegistrationForm() {
       <div>
         <input
           type="text"
-          placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          placeholder="Username"
           className="border p-2 rounded w-full"
         />
         {errors.username && <p className="text-red-500">{errors.username}</p>}
@@ -57,9 +59,9 @@ function RegistrationForm() {
       <div>
         <input
           type="email"
-          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
           className="border p-2 rounded w-full"
         />
         {errors.email && <p className="text-red-500">{errors.email}</p>}
@@ -68,9 +70,9 @@ function RegistrationForm() {
       <div>
         <input
           type="password"
-          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
           className="border p-2 rounded w-full"
         />
         {errors.password && <p className="text-red-500">{errors.password}</p>}

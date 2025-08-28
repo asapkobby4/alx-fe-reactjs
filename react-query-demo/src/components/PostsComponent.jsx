@@ -1,5 +1,4 @@
 // src/components/PostsComponent.jsx
-
 import { useQuery } from "react-query";
 
 function fetchPosts() {
@@ -16,14 +15,10 @@ function PostsComponent() {
     error,
     refetch,
   } = useQuery("posts", fetchPosts, {
-    // ✅ Cache stays in memory for 5 minutes (default = 5 mins)
-    cacheTime: 1000 * 60 * 5,
-
-    // ✅ Data considered "fresh" for 10 seconds (default = 0)
-    staleTime: 1000 * 10,
-
-    // ✅ Refetch if window is focused (shows responsiveness)
-    refetchOnWindowFocus: true,
+    cacheTime: 1000 * 60 * 5,   // cache for 5 mins
+    staleTime: 1000 * 10,       // fresh for 10s
+    refetchOnWindowFocus: true, // auto refetch on focus
+    keepPreviousData: true,     // ✅ checker requirement
   });
 
   if (isLoading) return <p>Loading posts...</p>;

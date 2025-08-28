@@ -1,72 +1,47 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-// ✅ Yup validation schema
-const validationSchema = Yup.object({
-  username: Yup.string().required("Username is required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  password: Yup.string().required("Password is required"),
-});
-
 function FormikForm() {
-  const handleSubmit = async (values, { resetForm }) => {
-    try {
-      const res = await fetch("https://jsonplaceholder.typicode.com/posts", {
-        method: "POST",
-        body: JSON.stringify(values),
-        headers: { "Content-type": "application/json; charset=UTF-8" },
-      });
+  const initialValues = { username: "", email: "", password: "" };
 
-      const data = await res.json();
-      console.log("User registered (Formik):", data);
-      alert("Registration successful!");
+  const validationSchema = Yup.object({
+    username: Yup.string().required("Username is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    password: Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+  });
 
-      resetForm();
-    } catch (err) {
-      console.error("Error:", err);
-    }
+  const handleSubmit = (values) => {
+    console.log("Form submitted:", values);
+    // mock API call
+    fetch("https://jsonplaceholder.typicode.com/posts", {
+      method: "POST",
+      body: JSON.stringify(values),
+      headers: { "Content-type": "application/json; charset=UTF-8" },
+    }).then((res) => res.json()).then((data) => console.log("API Response:", data));
   };
 
   return (
-    <Formik
-      initialValues={{ username: "", email: "", password: "" }}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-    >
-      <Form className="flex flex-col gap-4 max-w-sm mx-auto">
-        <h2 className="text-xl font-bold">Formik Registration Form</h2>
-
+    <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
+      <Form className="flex flex-col gap-4">
         <div>
-          <Field
-            type="text"
-            name="username"
-            placeholder="Username"
-            className="border p-2 rounded w-full"
-          />
-          <ErrorMessage name="username" component="p" className="text-red-500" />
+          <label>Username</label>
+          <Field name="username" type="text" className="border p-2 w-full" />
+          <ErrorMessage name="username" component="div" className="text-red-500 text-sm" />
         </div>
 
         <div>
-          <Field
-            type="email"
-            name="email"
-            placeholder="Email"
-            className="border p-2 rounded w-full"
-          />
-          <ErrorMessage name="email" component="p" className="text-red-500" />
+          <label>Email</label>
+          <Field name="email" type="email" className="border p-2 w-full" />
+          <ErrorMessage name="email" component="div" className="text-red-500 text-sm" />
         </div>
 
         <div>
-          <Field
-            type="password"
-            name="password"
-            placeholder="Password"
-            className="border p-2 rounded w-full"
-          />
-          <ErrorMessage name="password" component="p" className="text-red-500" />
+          <label>Password</label>
+          <Field name="password" type="password" className="border p-2 w-full" />
+          <ErrorMessage name="password" component="div" className="text-red-500 text-sm" />
         </div>
 
-        <button type="submit" className="bg-green-600 text-white p-2 rounded">
+        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
           Register
         </button>
       </Form>

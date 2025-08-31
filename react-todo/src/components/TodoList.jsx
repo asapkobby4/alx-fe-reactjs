@@ -1,30 +1,27 @@
-// src/components/TodoList.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 
-function TodoList() {
-  const [todos, setTodos] = useState([
-    { id: 1, text: "Learn React", completed: false },
-    { id: 2, text: "Build a Todo App", completed: false },
-  ]);
+const initialTodos = [
+  { id: 1, text: "Learn React", completed: false },
+  { id: 2, text: "Build a Todo App", completed: true },
+];
 
-  const [newTodo, setNewTodo] = useState("");
+export default function TodoList() {
+  const [todos, setTodos] = useState(initialTodos);
+  const [input, setInput] = useState("");
 
-  // ✅ Add new todo
-  const handleAddTodo = (e) => {
+  const addTodo = (e) => {
     e.preventDefault();
-    if (newTodo.trim() === "") return;
-
-    const todo = {
+    if (!input.trim()) return;
+    const newTodo = {
       id: Date.now(),
-      text: newTodo,
+      text: input,
       completed: false,
     };
-    setTodos([...todos, todo]);
-    setNewTodo("");
+    setTodos([...todos, newTodo]);
+    setInput("");
   };
 
-  // ✅ Toggle completion
-  const handleToggleTodo = (id) => {
+  const toggleTodo = (id) => {
     setTodos(
       todos.map((todo) =>
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
@@ -32,40 +29,41 @@ function TodoList() {
     );
   };
 
-  // ✅ Delete todo
-  const handleDeleteTodo = (id) => {
+  const deleteTodo = (id) => {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
 
   return (
     <div>
-      <h2>Todo List</h2>
-      <form onSubmit={handleAddTodo}>
+      <h1>Todo List</h1>
+      <form onSubmit={addTodo}>
         <input
-          type="text"
-          placeholder="Add a new todo"
-          value={newTodo}
-          onChange={(e) => setNewTodo(e.target.value)}
+          placeholder="Add new todo"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
         />
-        <button type="submit">Add Todo</button>
+        <button type="submit">Add</button>
       </form>
-
       <ul>
         {todos.map((todo) => (
           <li
             key={todo.id}
-            onClick={() => handleToggleTodo(todo.id)}
+            onClick={() => toggleTodo(todo.id)}
             style={{
-              cursor: "pointer",
               textDecoration: todo.completed ? "line-through" : "none",
+              cursor: "pointer",
             }}
+            data-testid="todo-item"
           >
-            {todo.text}{" "}
-            <button onClick={(e) => {
-              e.stopPropagation(); // ✅ prevent toggle on delete
-              handleDeleteTodo(todo.id);
-            }}>
-              Delete
+            {todo.text}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteTodo(todo.id);
+              }}
+              data-testid="delete-btn"
+            >
+              X
             </button>
           </li>
         ))}
@@ -73,5 +71,3 @@ function TodoList() {
     </div>
   );
 }
-
-export default TodoList;
